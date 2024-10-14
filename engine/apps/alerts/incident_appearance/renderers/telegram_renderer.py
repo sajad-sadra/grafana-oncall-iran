@@ -53,14 +53,11 @@ class AlertGroupTelegramRenderer(AlertGroupBaseRenderer):
         # It is needed to add info about organization to the telegram message for the oncall-gateway.
         text = f"<a href='{self.alert_group.channel.organization.web_link_with_uuid}'>&#8205;</a>"
         text += f"{status_emoji} #{self.alert_group.inside_organization_number}, {title}\n"
-        text += f"{status_verbose}, alerts: {alerts_count_str}\n"
-        text += f"Source: {self.alert_group.channel.short_name}\n"
-        text += f"{self.alert_group.web_link}"
-
         if message:
-            text += f"\n\n{message}"
-
+            text += f"\n{message}"
         if image_url is not None:
             text = f"<a href='{image_url}'>&#8205;</a>" + text
-
+        text += f"\n\n{status_verbose}, alerts: {alerts_count_str}\n"
+        text += f"Source: {self.alert_group.channel.short_name}\n"
+        text += f"{self.alert_group.web_link}"
         return emojize(text, language="alias")
